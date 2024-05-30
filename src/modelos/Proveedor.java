@@ -1,0 +1,61 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package modelos;
+
+import java.io.Serializable;
+
+/**
+ *
+ * @author HP
+ */
+public class Proveedor implements Serializable{
+    private Long documento;//id
+    private String nombre;
+    private String telefono;
+    private double deuda;
+
+    public Proveedor() {
+    }
+
+    public Proveedor(Long documento, String nombre, String telefono, double deuda) {
+        this.documento = documento;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.deuda = deuda;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public Long getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Long documento) {
+        this.documento = documento;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getDeuda() {
+        return deuda;
+    }
+
+    public void setDeuda(double deuda) {
+        this.deuda = deuda;
+    }
+    
+}
