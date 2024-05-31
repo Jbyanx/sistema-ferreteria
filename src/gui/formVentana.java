@@ -7,10 +7,14 @@ package gui;
 import controlador.Ferreteria;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import modelos.Cliente;
+import modelos.Persona;
 import serializacion.Persistencia;
 
 /**
@@ -40,7 +44,6 @@ public class formVentana extends javax.swing.JFrame {
                 Logger.getLogger(formVentana.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        JOptionPane.showMessageDialog(this,ferreteria.getPersonas());
     }
 
     /**
@@ -89,7 +92,7 @@ public class formVentana extends javax.swing.JFrame {
         lblDocumentoCli = new javax.swing.JLabel();
         txtDocumentoCliente = new javax.swing.JTextField();
         lblNombreCli = new javax.swing.JLabel();
-        txtNombreCliente1 = new javax.swing.JTextField();
+        txtNombreCli = new javax.swing.JTextField();
         lblApellidoCli = new javax.swing.JLabel();
         txtApellidoCliente = new javax.swing.JTextField();
         lblTelefonoCli = new javax.swing.JLabel();
@@ -413,7 +416,7 @@ public class formVentana extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -431,6 +434,11 @@ public class formVentana extends javax.swing.JFrame {
         tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaClientes.getTableHeader().setResizingAllowed(false);
         tablaClientes.getTableHeader().setReorderingAllowed(false);
+        tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClientesMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tablaClientes);
 
         lblListaClientes.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -474,53 +482,52 @@ public class formVentana extends javax.swing.JFrame {
         panelClientesLayout.setHorizontalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelClientesLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
                 .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblListaClientes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panelClientesLayout.createSequentialGroup()
-                            .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelClientesLayout.createSequentialGroup()
-                                        .addComponent(lblDocumentoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtDocumentoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(panelClientesLayout.createSequentialGroup()
-                                        .addComponent(lblNombreCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtNombreCliente1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelClientesLayout.createSequentialGroup()
-                                        .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(107, 107, 107)
-                                        .addComponent(btnGuardarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(panelClientesLayout.createSequentialGroup()
-                                    .addComponent(lblApellidoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtApellidoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(panelClientesLayout.createSequentialGroup()
-                                    .addComponent(lblTelefonoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtTelefonocliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(panelClientesLayout.createSequentialGroup()
-                                    .addComponent(lblDireccionCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtDireccionCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelClientesLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAbonarSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(368, 368, 368)))
+                    .addGroup(panelClientesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelClientesLayout.createSequentialGroup()
+                                .addComponent(lblDocumentoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtDocumentoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelClientesLayout.createSequentialGroup()
+                                .addComponent(lblNombreCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtNombreCli, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelClientesLayout.createSequentialGroup()
+                                .addComponent(lblApellidoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtApellidoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelClientesLayout.createSequentialGroup()
+                                .addComponent(lblTelefonoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtTelefonocliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelClientesLayout.createSequentialGroup()
+                                .addComponent(lblDireccionCli, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtDireccionCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelClientesLayout.createSequentialGroup()
+                                .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(107, 107, 107)
+                                .addComponent(btnGuardarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panelClientesLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(btnAbonarSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
                 .addGap(9, 9, 9))
+            .addGroup(panelClientesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblListaClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelClientesLayout.setVerticalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelClientesLayout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addContainerGap()
                 .addComponent(lblListaClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelClientesLayout.createSequentialGroup()
                         .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDocumentoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -528,7 +535,7 @@ public class formVentana extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNombreCli, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombreCliente1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNombreCli, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblApellidoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -541,13 +548,14 @@ public class formVentana extends javax.swing.JFrame {
                         .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDireccionCli, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDireccionCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(67, 67, 67)
+                        .addGap(39, 39, 39)
                         .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(26, 26, 26)
-                .addComponent(btnAbonarSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                            .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(48, 48, 48)
+                        .addComponent(btnAbonarSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         ventanas.addTab("Clientes", panelClientes);
@@ -1027,29 +1035,69 @@ public class formVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVentasActionPerformed
 
     private void btnGuardarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClienteActionPerformed
+        long documento = Long.parseLong(txtDocumentoCliente.getText().trim());
+        
         Cliente c = new Cliente();
 
-        c.setDocumento(Long.parseLong(txtDocumentoCliente.getText().trim()));
-        c.setNombre(txtNombreCliente.getText().trim());
+        c.setDocumento(documento);
+        c.setNombre(txtNombreCli.getText().trim());
         c.setApellido(txtApellidoCliente.getText().trim());
         c.setTelefono(txtTelefonocliente.getText().trim());
         c.setDireccion(txtDireccionCliente.getText().trim());
         c.setSaldo(0);
+
+        if(!ferreteria.buscarClienteByDocument(documento)){ // si no encuentra el cliente lo agrega
+            ferreteria.agregarCliente(c);
+            JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente");
+            
+        }else{ //si lo encuentra lo actualiza
+            int op = JOptionPane.showConfirmDialog(this,"Desea actualizar al cliente con documento "+ c.getDocumento()+" ?");
+            
+            if (op == JOptionPane.YES_OPTION){
+                actualizarUnCliente(c);
+                JOptionPane.showMessageDialog(this, "Cliente Actualizado exitosamente");
+            }
+            
+        }
         
-        ferreteria.agregarCliente(c);
-        JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente\n"+c.toString());
+        txtDocumentoCliente.setEnabled(true);
+        txtDocumentoCliente.setEditable(true);
         limpiarCamposCliente();
+        actualizarClientes();
+        desactivarBotonesCliente();
     }//GEN-LAST:event_btnGuardarClienteActionPerformed
 
     private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
+        txtDocumentoCliente.setEnabled(false);
+        txtDocumentoCliente.setEditable(false);
         
+        int selectedColumn = tablaClientes.getSelectedColumn();
+        int selectedRow = tablaClientes.getSelectedRow();
+        
+        if (selectedRow != -1) { // Verificar que hay una fila seleccionada
+            // Obtener los valores de cada columna de la fila seleccionada
+            long documento = (long) tablaClientes.getValueAt(selectedRow, 0);
+            String nombre = (String) tablaClientes.getValueAt(selectedRow, 1);
+            String apellido = (String) tablaClientes.getValueAt(selectedRow, 2);
+            String telefono = (String) tablaClientes.getValueAt(selectedRow, 3);
+            String direccion = (String) tablaClientes.getValueAt(selectedRow, 4);
+            
+            // Colocar los valores en los JTextField correspondientes
+            txtDocumentoCliente.setText(String.valueOf(documento));
+            txtNombreCli.setText(nombre);
+            txtApellidoCliente.setText(apellido);
+            txtTelefonocliente.setText(telefono);
+            txtDireccionCliente.setText(direccion);
+            
+        } else {
+            // Mostrar un mensaje si no hay una fila seleccionada
+            JOptionPane.showMessageDialog(null, "Seleccione una fila para editar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }  
     }//GEN-LAST:event_btnEditarClienteActionPerformed
 
     private void btnAbonarSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarSaldoActionPerformed
-        /*double saldo = Double.parseDouble(JOptionPane.showInputDialog("Digite el saldo a abonar"));
+        double saldo = Double.parseDouble(JOptionPane.showInputDialog("Digite el saldo a abonar"));
         if(saldo > 0){
-            System.out.println("saldo a abonar "+saldo);
-
             Long documento = (Long) tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0);
 
             int op =JOptionPane.showConfirmDialog(null,"Desea abonar "+ saldo+" al cliente con documento "+ documento);
@@ -1057,19 +1105,18 @@ public class formVentana extends javax.swing.JFrame {
             if ((op == 1) || op == 2){
                 return;
             } else{
-                ClienteDAO cdao = new ClienteDAO();
-                cdao.abonarSaldo(saldo, documento);
+                abonarSaldo(saldo, documento);
             }
 
-            limpiarCampos();
             actualizarClientes();
         } else {
             JOptionPane.showMessageDialog(null,"Ingreso un dato invalido");
-        }*/
+        }
+        desactivarBotonesCliente();
     }//GEN-LAST:event_btnAbonarSaldoActionPerformed
 
     private void panelClientesComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelClientesComponentShown
-        //actualizarClientes();
+        actualizarClientes();
     }//GEN-LAST:event_panelClientesComponentShown
 
     private void tablaProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedoresMouseClicked
@@ -1146,6 +1193,16 @@ public class formVentana extends javax.swing.JFrame {
             Logger.getLogger(formVentana.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
+        if(tablaClientes.getSelectedRow() != -1){
+            btnEditarCliente.setEnabled(true);
+            btnAbonarSaldo.setEnabled(true);
+        }else{
+            btnEditarCliente.setEnabled(false);
+            btnAbonarSaldo.setEnabled(false);
+        }
+    }//GEN-LAST:event_tablaClientesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1264,8 +1321,8 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JTextField txtDireccionFerreteria;
     private javax.swing.JTextField txtDocumentoCliente;
     private javax.swing.JTextField txtDocumentoProveedor;
+    private javax.swing.JTextField txtNombreCli;
     private javax.swing.JTextField txtNombreCliente;
-    private javax.swing.JTextField txtNombreCliente1;
     private javax.swing.JTextField txtNombreFerreteria;
     private javax.swing.JTextField txtNombreProd;
     private javax.swing.JTextField txtNombreProducto;
@@ -1282,9 +1339,53 @@ public class formVentana extends javax.swing.JFrame {
 
     private void limpiarCamposCliente() {
         txtDocumentoCliente.setText("");
-        txtNombreCliente1.setText("");
+        txtNombreCli.setText("");
         txtApellidoCliente.setText("");
         txtTelefonocliente.setText("");
         txtDireccionCliente.setText("");
+    }
+
+    private void actualizarClientes() {
+        DefaultTableModel model = (DefaultTableModel) tablaClientes.getModel();
+        model.setRowCount(0);
+        Object[] dato = new Object[6];
+        ArrayList<Cliente> clientes = ferreteria.getClientes();
+        
+        for (Cliente cliente : clientes) {
+            dato[0] = cliente.getDocumento();
+            dato[1] = cliente.getNombre();
+            dato[2] = cliente.getApellido();
+            dato[3] = cliente.getTelefono();
+            dato[4] = cliente.getDireccion();
+            dato[5] = cliente.getSaldo();
+            model.addRow(dato);
+        }
+        tablaClientes.setModel(model);
+    }
+
+    private void abonarSaldo(double saldo, long documento) {
+        Cliente c = ferreteria.getClienteByDocument(documento);
+        
+        if(c == null){
+            JOptionPane.showMessageDialog(this,"Error con el cliente");
+        } else{
+            c.setSaldo(c.getSaldo()+saldo);
+        }
+    }
+
+    private void actualizarUnCliente(Cliente c) {
+        for (Cliente cliente : ferreteria.getClientes()) {
+            if(cliente.getDocumento() == c.getDocumento()){
+                cliente.setNombre(c.getNombre());
+                cliente.setApellido(c.getApellido());
+                cliente.setTelefono(c.getTelefono());
+                cliente.setDireccion(c.getDireccion());
+            }
+        }
+    }
+
+    private void desactivarBotonesCliente() {
+        btnEditarCliente.setEnabled(false);
+        btnAbonarSaldo.setEnabled(false);
     }
 }

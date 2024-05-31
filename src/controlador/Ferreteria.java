@@ -7,6 +7,7 @@ package controlador;
 import java.io.Serializable;
 import java.util.ArrayList;
 import modelos.Cliente;
+import modelos.Empleado;
 import modelos.Persona;
 import modelos.Proveedor;
 import modelos.Venta;
@@ -51,6 +52,46 @@ public class Ferreteria implements Serializable{
         personas.add(c);
     }
     
+    public ArrayList<Cliente> getClientes(){
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        
+        for (Persona p : personas) {
+            if(p instanceof Cliente){
+                clientes.add((Cliente)p);
+            }
+        }
+        return clientes;
+    }
+    
+    public boolean buscarClienteByDocument(long document){
+        for (Cliente cliente : getClientes()) {
+            if(cliente.getDocumento() == document){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Cliente getClienteByDocument(long doc){
+        for (Cliente cliente : getClientes()) {
+            if(cliente.getDocumento() == doc){
+                return cliente;
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList<Empleado> getEmpleados(){
+        ArrayList<Empleado> empleados = new ArrayList<>();
+        
+        for (Persona p : personas) {
+            if(p instanceof Empleado){
+                empleados.add((Empleado)p);
+            }
+        }
+        return empleados;
+    }
+
     public long getRUT() {
         return RUT;
     }
@@ -81,11 +122,6 @@ public class Ferreteria implements Serializable{
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    @Override
-    public String toString() {
-        return "Ferreteria{" + "RUT=" + RUT + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + ", ventas=" + ventas + ", personas=" + personas + ", proveedores=" + proveedores + ", productos=" + productos + ", compras=" + compras + '}';
     }
 
     public ArrayList<Venta> getVentas() {
@@ -127,6 +163,10 @@ public class Ferreteria implements Serializable{
     public void setCompras(ArrayList<Proveedor> compras) {
         this.compras = compras;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Ferreteria{" + "RUT=" + RUT + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + ", ventas=" + ventas + ", personas=" + personas + ", proveedores=" + proveedores + ", productos=" + productos + ", compras=" + compras + '}';
+    }
     
 }

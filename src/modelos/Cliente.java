@@ -21,7 +21,7 @@ public class Cliente extends Persona implements Serializable{
         super(documento, nombre, apellido, telefono, direccion, user, password);
         this.saldo = saldo;
     }
-
+    
     public double getSaldo() {
         return saldo;
     }
