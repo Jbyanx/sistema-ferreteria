@@ -20,14 +20,18 @@ public class Ferreteria implements Serializable{
     private String nombre;
     private String telefono;
     private String direccion;
-    private ArrayList<Venta> ventas;
+    private ArrayList<Venta> ventas; //a clientes
     private ArrayList<Persona> personas;
     private ArrayList<Proveedor> proveedores;
+    private ArrayList<Proveedor> productos;
+    private ArrayList<Proveedor> compras; // a proveedores
 
     public Ferreteria() {
         this.ventas = new ArrayList<>();
         this.personas = new ArrayList<>();
         this.proveedores = new ArrayList<>();
+        this.productos = new ArrayList<>();
+        this.compras = new ArrayList<>();
     }
 
     public Ferreteria(long RUT, String nombre, String telefono, String direccion) {
@@ -39,6 +43,8 @@ public class Ferreteria implements Serializable{
         this.ventas = new ArrayList<>();
         this.personas = new ArrayList<>();
         this.proveedores = new ArrayList<>();
+        this.productos = new ArrayList<>();
+        this.compras = new ArrayList<>();
     }
 
     public void agregarCliente(Cliente c){
@@ -79,7 +85,7 @@ public class Ferreteria implements Serializable{
 
     @Override
     public String toString() {
-        return "Ferreteria{" + "RUT=" + RUT + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + '}';
+        return "Ferreteria{" + "RUT=" + RUT + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + ", ventas=" + ventas + ", personas=" + personas + ", proveedores=" + proveedores + ", productos=" + productos + ", compras=" + compras + '}';
     }
 
     public ArrayList<Venta> getVentas() {
@@ -104,6 +110,22 @@ public class Ferreteria implements Serializable{
 
     public void setProveedores(ArrayList<Proveedor> proveedores) {
         this.proveedores = proveedores;
+    }
+
+    public ArrayList<Proveedor> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<Proveedor> productos) {
+        this.productos = productos;
+    }
+
+    public ArrayList<Proveedor> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(ArrayList<Proveedor> compras) {
+        this.compras = compras;
     }
     
     

@@ -26,14 +26,6 @@ public class Proveedor implements Serializable{
         this.deuda = deuda;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public Long getDocumento() {
         return documento;
     }
@@ -50,6 +42,14 @@ public class Proveedor implements Serializable{
         this.nombre = nombre;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public double getDeuda() {
         return deuda;
     }
@@ -57,5 +57,11 @@ public class Proveedor implements Serializable{
     public void setDeuda(double deuda) {
         this.deuda = deuda;
     }
+
+    @Override
+    public String toString() {
+        return "Proveedor{" + "documento=" + documento + ", nombre=" + nombre + ", telefono=" + telefono + ", deuda=" + deuda + '}';
+    }
+
     
 }

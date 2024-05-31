@@ -12,32 +12,34 @@ public class Producto implements Serializable{
     private String nombre;
     private double costo;
     private double precio;
+    private Proveedor proveedor;
 
     public Producto() {
+        
     }
 
-    public Producto(int codigo, String descripcion, double costo, double precio) {
+    public Producto(int codigo, String nombre, double costo, double precio, Proveedor proveedor) {
         this.codigo = codigo;
-        this.nombre = descripcion;
+        this.nombre = nombre;
         this.costo = costo;
         this.precio = precio;
+        this.proveedor = proveedor;
     }
 
-
-    public double getPrecio() {
-        return precio;
+    public int getCodigo() {
+        return codigo;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
-    public String getDescripcion() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.nombre = descripcion;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public double getCosto() {
@@ -48,18 +50,21 @@ public class Producto implements Serializable{
         this.costo = costo;
     }
 
-
-    public int getCodigo() {
-        return codigo;
+    public double getPrecio() {
+        return precio;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" + "codigo=" + codigo + ", nombre=" + nombre + ", costo=" + costo + ", precio=" + precio + '}';
+    public Proveedor getProveedor() {
+        return proveedor;
     }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
+
     
 }

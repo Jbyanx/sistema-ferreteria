@@ -18,15 +18,16 @@ public class Venta implements Serializable{
     private Cliente cliente;
     
     public Venta(){
-        this.productos = new ArrayList<>();
+        
     }
 
-    public Venta(long id, double precioTotal, Cliente cliente) {
+    public Venta(long id, ArrayList<Producto> productos, double precioTotal, Cliente cliente) {
         this.id = id;
-        this.productos = new ArrayList<>();
+        this.productos = productos;
         this.precioTotal = precioTotal;
         this.cliente = cliente;
     }
+
     
     public void agregarProductoVenta(Producto p){
         productos.add(p);
@@ -35,7 +36,7 @@ public class Venta implements Serializable{
     public boolean eliminarProductoventa(Producto p){
         return productos.remove(p);
     }
-    
+
     public long getId() {
         return id;
     }
@@ -67,6 +68,10 @@ public class Venta implements Serializable{
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Venta{" + "id=" + id + ", productos=" + productos + ", precioTotal=" + precioTotal + ", cliente=" + cliente + '}';
+    }
     
 }
