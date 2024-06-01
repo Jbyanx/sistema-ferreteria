@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelos.Cliente;
 import modelos.Persona;
+import modelos.Proveedor;
 import serializacion.Persistencia;
 
 /**
@@ -23,7 +24,7 @@ import serializacion.Persistencia;
  */
 public class formVentana extends javax.swing.JFrame {
     private Ferreteria ferreteria;
-    private String archivo = "ferreteria-data.bat";
+    private String archivo = "ferreteria-data.data";
     
     /**
      * Creates new form formVentana
@@ -1113,10 +1114,10 @@ public class formVentana extends javax.swing.JFrame {
 
             int op =JOptionPane.showConfirmDialog(null,"Desea abonar "+ saldo+" al cliente con documento "+ documento);
 
-            if ((op == 1) || op == 2){
-                return;
-            } else{
+            if (op == JOptionPane.YES_OPTION){
                 abonarSaldo(saldo, documento);
+            } else{
+                return;
             }
 
             actualizarClientes();
@@ -1143,58 +1144,86 @@ public class formVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaProveedoresMouseClicked
 
     private void btnGuardarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarProveedorActionPerformed
-        /*Proveedor p = new Proveedor();
-        p.setDocumento(Long.valueOf(txtDocumentoProveedor.getText().trim()));
+        long documento = Long.parseLong(txtDocumentoProveedor.getText().trim());
+        
+        Proveedor p = new Proveedor();
+        p.setDocumento(documento);
         p.setNombre(txtNombreProveedor.getText().trim());
         p.setTelefono(txtTelefonoProveedor.getText().trim());
+        p.setDeuda(0);
 
-        ProveedorDAO dao = new ProveedorDAO();
-        boolean encontrado = dao.buscarProveedor(p.getDocumento());
-        if(!encontrado)
-        guardarProveedor();
-        else
-        dao.actualizarProveedor(p);
-
-        limpiarCampos();
-        actualizarProveedores();*/
+        boolean encontrado = ferreteria.buscarProveedorByDocument(p.getDocumento());
+        
+        if(!encontrado){
+            ferreteria.agregarProveedor(p);
+        JOptionPane.showMessageDialog(this, "Proveedor agregado exitosamente");
+        }else{
+            int op = JOptionPane.showConfirmDialog(this,"El proveedor ya existe, desea actualizar?");
+            
+            if(op == JOptionPane.YES_OPTION){
+                actualizarProveedor(p);
+                JOptionPane.showMessageDialog(this, "Proveedor Actualizado exitosamente");
+            }
+            
+        }
+        txtDocumentoProveedor.setEditable(true);
+        txtDocumentoProveedor.setEnabled(true);
+        limpiarCamposProveedores();
+        actualizarProveedores();
+        desactivarBotonesProveedores();
     }//GEN-LAST:event_btnGuardarProveedorActionPerformed
 
     private void btnEditarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProveedorActionPerformed
-        txtDocumentoProveedor.setText(String.valueOf(tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 0)));
-        txtDocumentoProveedor.setEditable(false);
         txtDocumentoProveedor.setEnabled(false);
-        txtNombreProveedor.setText((String) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 1));
-        txtTelefonoProveedor.setText((String) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 2));
+        txtDocumentoProveedor.setEditable(false);
+        
+        int selectedColumn = tablaProveedores.getSelectedColumn();
+        int selectedRow = tablaProveedores.getSelectedRow();
+        
+        if (selectedRow != -1) { // Verificar que hay una fila seleccionada
+            // Obtener los valores de cada columna de la fila seleccionada
+            long documento = (long) tablaProveedores.getValueAt(selectedRow, 0);
+            String nombre = (String) tablaProveedores.getValueAt(selectedRow, 1);
+            String telefono = (String) tablaProveedores.getValueAt(selectedRow, 2);
+            double deuda = (double) tablaProveedores.getValueAt(selectedRow, 3);
+            
+            // Colocar los valores en los JTextField correspondientes
+            txtDocumentoProveedor.setText(String.valueOf(documento));
+            txtNombreProveedor.setText(nombre);
+            txtTelefonoProveedor.setText(telefono);
+            
+        } else {
+            // Mostrar un mensaje si no hay una fila seleccionada
+            JOptionPane.showMessageDialog(null, "Seleccione una fila para editar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }  
     }//GEN-LAST:event_btnEditarProveedorActionPerformed
 
     private void btnAbonarDeudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarDeudaActionPerformed
-        /*double saldo = Double.parseDouble(JOptionPane.showInputDialog("Digite la cantidad a abonar"));
+        double abono = Double.parseDouble(JOptionPane.showInputDialog("Digite la cantidad a abonar"));
 
         double deuda = (double) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 3);
 
-        if(deuda > saldo){
-            System.out.println("cantidad a abonar $"+deuda);
+        if(deuda > abono){
+            System.out.println("cantidad a abonar $"+abono);
 
             Long documento = (Long) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 0);
 
-            int op =JOptionPane.showConfirmDialog(null,"Desea abonar "+ saldo+" al proveedor con documento "+ documento);
+            int op = JOptionPane.showConfirmDialog(null,"Desea abonar "+ abono+" al proveedor?");
 
-            if ((op == 1) || op == 2){
-                return;
+            if (op == JOptionPane.YES_OPTION){
+                abonarADeuda(abono, documento);
             } else{
-                ProveedorDAO pdao = new ProveedorDAO();
-                pdao.abonarADeuda(saldo, documento);
+                JOptionPane.showMessageDialog(null,"El abono $"+abono+" supera el total de la deuda: $"+deuda);
             }
 
-            limpiarCampos();
             actualizarProveedores();
         } else {
-            JOptionPane.showMessageDialog(null,"Ingreso un dato invalido");
-        }*/
+            JOptionPane.showMessageDialog(null,"El abono $"+abono+" supera el total de la deuda: $"+deuda);
+        }
     }//GEN-LAST:event_btnAbonarDeudaActionPerformed
 
     private void panelProveedoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelProveedoresComponentShown
-        //actualizarProveedores();
+        actualizarProveedores();
     }//GEN-LAST:event_panelProveedoresComponentShown
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1400,4 +1429,51 @@ public class formVentana extends javax.swing.JFrame {
         btnEditarCliente.setEnabled(false);
         btnAbonarSaldo.setEnabled(false);
     }
+
+    private void actualizarProveedor(Proveedor p) {
+        for (Proveedor proveedor : ferreteria.getProveedores()) {
+            if(proveedor.getDocumento() == p.getDocumento()){
+                proveedor.setNombre(p.getNombre());
+                proveedor.setTelefono(p.getTelefono());
+            }
+        }
+    }
+
+    private void limpiarCamposProveedores() {
+        txtDocumentoProveedor.setText("");
+        txtNombreProveedor.setText("");
+        txtTelefonoProveedor.setText("");
+    }
+
+    private void actualizarProveedores() {
+        DefaultTableModel model = (DefaultTableModel) tablaProveedores.getModel();
+        model.setRowCount(0);
+        Object[] dato = new Object[4];
+        ArrayList<Proveedor> proveedores = ferreteria.getProveedores();
+        
+        for (Proveedor proveedor : proveedores) {
+            dato[0] = proveedor.getDocumento();
+            dato[1] = proveedor.getNombre();
+            dato[2] = proveedor.getTelefono();
+            dato[3] = proveedor.getDeuda();
+            model.addRow(dato);
+        }
+        tablaProveedores.setModel(model);
+    }
+
+    private void desactivarBotonesProveedores() {
+        btnEditarProveedor.setEnabled(false);
+        btnAbonarDeuda.setEnabled(false);
+    }
+
+    private void abonarADeuda(double abono, Long documento) {
+        Proveedor p = ferreteria.getProveedByDocument(documento);
+        
+        if(p == null){
+            JOptionPane.showMessageDialog(this,"Error con el proveedor");
+        } else{
+            p.setDeuda(p.getDeuda()-abono);
+        }
+    }
+
 }

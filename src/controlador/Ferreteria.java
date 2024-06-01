@@ -52,6 +52,10 @@ public class Ferreteria implements Serializable{
         personas.add(c);
     }
     
+    public void agregarProveedor(Proveedor p){
+        proveedores.add(p);
+    }
+    
     public ArrayList<Cliente> getClientes(){
         ArrayList<Cliente> clientes = new ArrayList<>();
         
@@ -172,5 +176,23 @@ public class Ferreteria implements Serializable{
     public String toString() {
         return "Ferreteria{" + "RUT=" + RUT + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + ", ventas=" + ventas + ", personas=" + personas + ", proveedores=" + proveedores + ", productos=" + productos + ", compras=" + compras + '}';
     }
-    
+
+    public boolean buscarProveedorByDocument(Long documento) {
+        for (Proveedor proveedor : getProveedores()) {
+            if(proveedor.getDocumento() == documento){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Proveedor getProveedByDocument(Long documento) {
+        for (Proveedor proveedor : proveedores) {
+            if(proveedor.getDocumento() == documento){
+                return proveedor;
+            }
+        }
+        return null;
+    }
+
 }
