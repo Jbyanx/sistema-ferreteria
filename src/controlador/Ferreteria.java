@@ -72,6 +72,10 @@ public class Ferreteria implements Serializable{
         return false;
     }
     
+    public void metodo(){
+        
+    }
+    
     public Cliente getClienteByDocument(long doc){
         for (Cliente cliente : getClientes()) {
             if(cliente.getDocumento() == doc){

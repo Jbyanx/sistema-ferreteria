@@ -65,6 +65,7 @@ public class formVentana extends javax.swing.JFrame {
         btnProveedores = new javax.swing.JButton();
         btnVentas = new javax.swing.JButton();
         btnInfo = new javax.swing.JButton();
+        btnEmpleados = new javax.swing.JButton();
         ventanas = new javax.swing.JTabbedPane();
         panelNuevaVenta = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -209,7 +210,7 @@ public class formVentana extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
@@ -224,7 +225,7 @@ public class formVentana extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
@@ -239,7 +240,7 @@ public class formVentana extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
@@ -249,11 +250,21 @@ public class formVentana extends javax.swing.JFrame {
         btnInfo.setPreferredSize(new java.awt.Dimension(120, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         panelBotones.add(btnInfo, gridBagConstraints);
+
+        btnEmpleados.setText("Panel Empleados");
+        btnEmpleados.setPreferredSize(new java.awt.Dimension(120, 40));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.ipady = 10;
+        panelBotones.add(btnEmpleados, gridBagConstraints);
 
         panel.add(panelBotones, java.awt.BorderLayout.LINE_START);
 
@@ -341,7 +352,7 @@ public class formVentana extends javax.swing.JFrame {
                         .addComponent(lblStockProd, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtStockProd, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                         .addComponent(lblPrecioProd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPrecioProd, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -514,7 +525,7 @@ public class formVentana extends javax.swing.JFrame {
                         .addGap(88, 88, 88)
                         .addComponent(btnAbonarSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
                 .addGap(9, 9, 9))
             .addGroup(panelClientesLayout.createSequentialGroup()
                 .addContainerGap()
@@ -648,7 +659,7 @@ public class formVentana extends javax.swing.JFrame {
                                 .addComponent(lblProveedorProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(9, 9, 9))
         );
@@ -1251,6 +1262,7 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JButton btnEditarProd;
     private javax.swing.JButton btnEditarProveedor;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEmpleados;
     private javax.swing.JButton btnGuardarCliente;
     private javax.swing.JButton btnGuardarFerreteria;
     private javax.swing.JButton btnGuardarProveedor;
