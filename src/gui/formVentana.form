@@ -665,6 +665,9 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="panelProductos">
+              <Events>
+                <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="panelProductosComponentShown"/>
+              </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                   <JTabbedPaneConstraints tabName="Productos">
@@ -790,6 +793,9 @@
                           </Table>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaProductosMouseClicked"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -808,8 +814,11 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnNuevoProd">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Nuevo"/>
+                    <Property name="text" type="java.lang.String" value="Guardar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevoProdActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtCodigoProd">
                 </Component>
@@ -838,6 +847,9 @@
                     <Property name="text" type="java.lang.String" value="Editar"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarProdActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtPrecioProduct">
                 </Component>
@@ -854,14 +866,7 @@
                 <Component class="javax.swing.JComboBox" name="comboProveedores">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="6">
-                        <StringItem index="0" value="Proveedor 1"/>
-                        <StringItem index="1" value="Proveedor 2"/>
-                        <StringItem index="2" value="Proveedor 3"/>
-                        <StringItem index="3" value="Proveedor 4"/>
-                        <StringItem index="4" value="Proveedor 5"/>
-                        <StringItem index="5" value=" "/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                   <AuxValues>

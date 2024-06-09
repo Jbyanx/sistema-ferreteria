@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelos.Cliente;
 import modelos.Persona;
+import modelos.Producto;
 import modelos.Proveedor;
 import serializacion.Persistencia;
 
@@ -572,6 +573,12 @@ public class formVentana extends javax.swing.JFrame {
 
         ventanas.addTab("Clientes", panelClientes);
 
+        panelProductos.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                panelProductosComponentShown(evt);
+            }
+        });
+
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -598,6 +605,11 @@ public class formVentana extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProductosMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tablaProductos);
 
         lvlInventarioProd.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -605,7 +617,12 @@ public class formVentana extends javax.swing.JFrame {
 
         lblCodigoProd.setText("Codigo:");
 
-        btnNuevoProd.setText("Nuevo");
+        btnNuevoProd.setText("Guardar");
+        btnNuevoProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoProdActionPerformed(evt);
+            }
+        });
 
         lblNombreProd.setText("Nombre:");
 
@@ -616,12 +633,15 @@ public class formVentana extends javax.swing.JFrame {
 
         btnEditarProd.setText("Editar");
         btnEditarProd.setEnabled(false);
+        btnEditarProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarProdActionPerformed(evt);
+            }
+        });
 
         lblPrecioProduct.setText("Precio:");
 
         lblProveedorProducto.setText("Proveedor:");
-
-        comboProveedores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Proveedor 1", "Proveedor 2", "Proveedor 3", "Proveedor 4", "Proveedor 5", " " }));
 
         javax.swing.GroupLayout panelProductosLayout = new javax.swing.GroupLayout(panelProductos);
         panelProductos.setLayout(panelProductosLayout);
@@ -1132,14 +1152,12 @@ public class formVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_panelClientesComponentShown
 
     private void tablaProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedoresMouseClicked
-        int filaSeleccionada = tablaProveedores.getSelectedRow();
-
-        if (filaSeleccionada == -1) {
-            btnEditarProveedor.setEnabled(false);
-            btnAbonarDeuda.setEnabled(false);
-        } else {
+        if (tablaProveedores.getSelectedRow() != -1) {
             btnEditarProveedor.setEnabled(true);
             btnAbonarDeuda.setEnabled(true);
+        } else {
+            btnEditarProveedor.setEnabled(false);
+            btnAbonarDeuda.setEnabled(false);
         }
     }//GEN-LAST:event_tablaProveedoresMouseClicked
 
@@ -1152,16 +1170,16 @@ public class formVentana extends javax.swing.JFrame {
         p.setTelefono(txtTelefonoProveedor.getText().trim());
         p.setDeuda(0);
 
-        boolean encontrado = ferreteria.buscarProveedorByDocument(p.getDocumento());
+        boolean encontrado = ferreteria.buscarProveedorByDocument(documento);
         
         if(!encontrado){
             ferreteria.agregarProveedor(p);
-        JOptionPane.showMessageDialog(this, "Proveedor agregado exitosamente");
+            JOptionPane.showMessageDialog(this, "Proveedor agregado exitosamente");
         }else{
             int op = JOptionPane.showConfirmDialog(this,"El proveedor ya existe, desea actualizar?");
             
             if(op == JOptionPane.YES_OPTION){
-                actualizarProveedor(p);
+                actualizarUnProveedor(p);
                 JOptionPane.showMessageDialog(this, "Proveedor Actualizado exitosamente");
             }
             
@@ -1204,7 +1222,7 @@ public class formVentana extends javax.swing.JFrame {
         double deuda = (double) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 3);
 
         if(deuda > abono){
-            System.out.println("cantidad a abonar $"+abono);
+            System.out.println("cantidad a abonar: $"+abono);
 
             Long documento = (Long) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 0);
 
@@ -1243,6 +1261,77 @@ public class formVentana extends javax.swing.JFrame {
             btnAbonarSaldo.setEnabled(false);
         }
     }//GEN-LAST:event_tablaClientesMouseClicked
+
+    private void panelProductosComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelProductosComponentShown
+        actualizarComboProveedores();
+        actualizarProductos();
+    }//GEN-LAST:event_panelProductosComponentShown
+
+    private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMouseClicked
+        if(tablaProductos.getSelectedRow() != -1){
+            btnEditarProd.setEnabled(true);
+            btnBorrarProd.setEnabled(true);
+        }else{
+            btnEditarProd.setEnabled(false);
+            btnBorrarProd.setEnabled(false);
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaProductosMouseClicked
+
+    private void btnNuevoProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProdActionPerformed
+        Producto p = new Producto();
+
+        p.setCodigo(Integer.parseInt(txtCodigoProd.getText().trim()));
+        p.setNombre(txtNombreProd.getText().trim());
+        p.setCosto(Double.parseDouble(txtCostoProd.getText().trim()));
+        p.setCosto(Double.parseDouble(txtPrecioProduct.getText().trim()));
+        p.setProveedor(buscarProveedorByNombre((String)comboProveedores.getSelectedItem()));
+        
+        if(!ferreteria.buscarProductoByCodigo(p.getCodigo())){ // si no encuentra el cliente lo agrega
+            ferreteria.agregarProducto(p);
+            JOptionPane.showMessageDialog(this, "Producto agregado exitosamente");
+            
+        }else{ //si lo encuentra lo actualiza
+            int op = JOptionPane.showConfirmDialog(this,"Desea actualizar el producto con codigo "+ p.getCodigo()+" ?");
+            
+            if (op == JOptionPane.YES_OPTION){
+                actualizarUnProducto(p);
+                JOptionPane.showMessageDialog(this, "Prducto Actualizado exitosamente");
+            }
+            
+        }
+        
+        txtCodigoProd.setEnabled(true);
+        txtCodigoProd.setEditable(true);
+        limpiarCamposProducto();
+        actualizarProductos();
+        desactivarBotonesProducto();
+    }//GEN-LAST:event_btnNuevoProdActionPerformed
+
+    private void btnEditarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProdActionPerformed
+        txtCodigoProd.setEnabled(false);
+        txtCodigoProd.setEditable(false);
+        
+        int selectedColumn = tablaProductos.getSelectedColumn();
+        int selectedRow = tablaProductos.getSelectedRow();
+        
+        if (selectedRow != -1) { // Verificar que hay una fila seleccionada
+            // Obtener los valores de cada columna de la fila seleccionada
+            int codigo = (int) tablaProductos.getValueAt(selectedRow, 0);
+            String nombre = (String) tablaProductos.getValueAt(selectedRow, 1);
+            double costo = (double) tablaProductos.getValueAt(selectedRow, 2);
+            double precio = (double) tablaProductos.getValueAt(selectedRow, 3);
+           
+            // Colocar los valores en los JTextField correspondientes
+            txtCodigoProd.setText(String.valueOf(codigo));
+            txtNombreProd.setText(nombre);
+            txtCostoProd.setText(String.valueOf(costo));
+            txtPrecioProduct.setText(String.valueOf(precio));
+            
+        } else {
+            // Mostrar un mensaje si no hay una fila seleccionada
+            JOptionPane.showMessageDialog(null, "Seleccione una fila para editar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } 
+    }//GEN-LAST:event_btnEditarProdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1430,7 +1519,7 @@ public class formVentana extends javax.swing.JFrame {
         btnAbonarSaldo.setEnabled(false);
     }
 
-    private void actualizarProveedor(Proveedor p) {
+    private void actualizarUnProveedor(Proveedor p) {
         for (Proveedor proveedor : ferreteria.getProveedores()) {
             if(proveedor.getDocumento() == p.getDocumento()){
                 proveedor.setNombre(p.getNombre());
@@ -1474,6 +1563,63 @@ public class formVentana extends javax.swing.JFrame {
         } else{
             p.setDeuda(p.getDeuda()-abono);
         }
+    }
+
+    private void actualizarProductos() {
+        DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
+        model.setRowCount(0);
+        Object[] dato = new Object[5];
+        ArrayList<Producto> productos = ferreteria.getProductos();
+        
+        for (Producto prod : productos) {
+            dato[0] = prod.getCodigo();
+            dato[1] = prod.getNombre();
+            dato[2] = prod.getCosto();
+            dato[3] = prod.getPrecio();
+            dato[4] = prod.getProveedor();
+            model.addRow(dato);
+        }
+        tablaProductos.setModel(model);
+    }
+
+    private void actualizarComboProveedores() {
+        comboProveedores.removeAllItems();
+        
+        for (Proveedor proveedor : ferreteria.getProveedores()) {
+            comboProveedores.addItem(proveedor.getNombre());
+        }
+    }
+
+    private Proveedor buscarProveedorByNombre(String name) {
+        for (Proveedor proveedor : ferreteria.getProveedores()) {
+            if(proveedor.getNombre().equals(name)){
+                return proveedor;
+            }
+        }
+        return null;
+    }
+
+    private void actualizarUnProducto(Producto p) {
+        for (Producto producto : ferreteria.getProductos()) {
+            if(producto.getCodigo() == p.getCodigo()){
+                producto.setNombre(p.getNombre());
+                producto.setCosto(p.getCosto());
+                producto.setPrecio(p.getPrecio());
+                producto.setProveedor(p.getProveedor());
+            }
+        }
+    }
+
+    private void limpiarCamposProducto() {
+        txtCodigoProd.setText("");
+        txtNombreProd.setText("");
+        txtCostoProd.setText("");
+        txtPrecioProduct.setText("");
+    }
+
+    private void desactivarBotonesProducto() {
+        btnBorrarProd.setEnabled(false);
+        btnEditarProd.setEnabled(false);
     }
 
 }

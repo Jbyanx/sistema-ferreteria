@@ -6,9 +6,11 @@ package controlador;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import modelos.Cliente;
 import modelos.Empleado;
 import modelos.Persona;
+import modelos.Producto;
 import modelos.Proveedor;
 import modelos.Venta;
 
@@ -24,7 +26,7 @@ public class Ferreteria implements Serializable{
     private ArrayList<Venta> ventas; //a clientes
     private ArrayList<Persona> personas;
     private ArrayList<Proveedor> proveedores;
-    private ArrayList<Proveedor> productos;
+    private ArrayList<Producto> productos;
     private ArrayList<Proveedor> compras; // a proveedores
 
     public Ferreteria() {
@@ -74,10 +76,6 @@ public class Ferreteria implements Serializable{
             }
         }
         return false;
-    }
-    
-    public void metodo(){
-        
     }
     
     public Cliente getClienteByDocument(long doc){
@@ -156,11 +154,11 @@ public class Ferreteria implements Serializable{
         this.proveedores = proveedores;
     }
 
-    public ArrayList<Proveedor> getProductos() {
+    public ArrayList<Producto> getProductos() {
         return productos;
     }
 
-    public void setProductos(ArrayList<Proveedor> productos) {
+    public void setProductos(ArrayList<Producto> productos) {
         this.productos = productos;
     }
 
@@ -177,7 +175,7 @@ public class Ferreteria implements Serializable{
         return "Ferreteria{" + "RUT=" + RUT + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + ", ventas=" + ventas + ", personas=" + personas + ", proveedores=" + proveedores + ", productos=" + productos + ", compras=" + compras + '}';
     }
 
-    public boolean buscarProveedorByDocument(Long documento) {
+    public boolean buscarProveedorByDocument(long documento) {
         for (Proveedor proveedor : getProveedores()) {
             if(proveedor.getDocumento() == documento){
                 return true;
@@ -193,6 +191,18 @@ public class Ferreteria implements Serializable{
             }
         }
         return null;
+    }
+
+    public boolean buscarProductoByCodigo(int codigo) {
+        for (Producto product : productos) {
+            if(product.getCodigo()==codigo)
+                return true;
+        }
+        return false;
+    }
+
+    public void agregarProducto(Producto p) {
+        productos.add(p);
     }
 
 }

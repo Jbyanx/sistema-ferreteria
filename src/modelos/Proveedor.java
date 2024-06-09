@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author HP
  */
 public class Proveedor implements Serializable{
-    private Long documento;//id
+    private long documento;//id
     private String nombre;
     private String telefono;
     private double deuda;
@@ -19,18 +19,18 @@ public class Proveedor implements Serializable{
     public Proveedor() {
     }
 
-    public Proveedor(Long documento, String nombre, String telefono, double deuda) {
+    public Proveedor(long documento, String nombre, String telefono, double deuda) {
         this.documento = documento;
         this.nombre = nombre;
         this.telefono = telefono;
         this.deuda = deuda;
     }
 
-    public Long getDocumento() {
+    public long getDocumento() {
         return documento;
     }
 
-    public void setDocumento(Long documento) {
+    public void setDocumento(long documento) {
         this.documento = documento;
     }
 
