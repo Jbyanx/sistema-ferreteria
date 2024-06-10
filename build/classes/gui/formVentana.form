@@ -183,6 +183,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JTabbedPane" name="ventanas">
+          <Events>
+            <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="ventanasComponentShown"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="Center"/>
@@ -192,6 +195,9 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="panelNuevaVenta">
+              <Events>
+                <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="panelNuevaVentaComponentShown"/>
+              </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                   <JTabbedPaneConstraints tabName="Nueva Venta">
@@ -203,22 +209,31 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="btnEliminar" min="-2" pref="85" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+                                  <Component id="total" min="-2" pref="411" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="btnVender" min="-2" pref="85" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCodProd" min="-2" pref="60" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCodigoProducto" min="-2" pref="74" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                                   <Component id="lblProducto" min="-2" pref="62" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="comboProductos" min="-2" pref="144" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" min="-2" pref="81" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtNombreProducto" min="-2" pref="215" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                                  <Component id="txtcantidadProductos" min="-2" pref="71" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
                                   <Component id="lblStockProd" min="-2" pref="73" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtStockProd" min="-2" pref="74" max="-2" attributes="0"/>
-                                  <EmptySpace pref="122" max="32767" attributes="0"/>
+                                  <EmptySpace pref="136" max="32767" attributes="0"/>
                                   <Component id="lblPrecioProd" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtPrecioProd" min="-2" pref="130" max="-2" attributes="0"/>
@@ -227,21 +242,13 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="btnQuitar" min="-2" pref="83" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="lblNuevaVenta" alignment="1" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="btnEliminar" min="-2" pref="85" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
-                                  <Component id="total" min="-2" pref="411" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="btnVender" min="-2" pref="85" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblNombreCliente" min="-2" pref="62" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtNombreCliente" min="-2" pref="215" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="922" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="lblNuevaVenta" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -250,42 +257,42 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                          <Component id="lblNuevaVenta" pref="110" max="32767" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblNuevaVenta" pref="84" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCodProd" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                              <Component id="txtCodigoProducto" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="lblProducto" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                              <Component id="txtNombreProducto" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="txtPrecioProd" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="lblPrecioProd" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="lblStockProd" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="txtStockProd" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="btnAgregar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                               <Component id="btnQuitar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="comboProductos" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtcantidadProductos" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblNombreCliente" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="txtNombreCliente" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="222" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="btnVender" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                                       <Component id="btnEliminar" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace max="32767" attributes="0"/>
                                   <Component id="total" min="-2" pref="39" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -301,18 +308,51 @@
                     <Component class="javax.swing.JTable" name="tablaNuevaVenta">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="4">
+                          <Table columnCount="5" rowCount="4">
                             <Column editable="false" title="Codigo" type="java.lang.Integer"/>
                             <Column editable="false" title="Producto" type="java.lang.String"/>
                             <Column editable="false" title="Cantidad" type="java.lang.Integer"/>
-                            <Column editable="false" title="Precio" type="java.lang.Float"/>
+                            <Column editable="false" title="Precio Unitario" type="java.lang.Float"/>
+                            <Column editable="false" title="Precio " type="java.lang.Double"/>
                           </Table>
+                        </Property>
+                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                          <TableColumnModel selectionModel="2">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                          </TableColumnModel>
                         </Property>
                         <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaNuevaVentaMouseClicked"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -343,20 +383,13 @@
                     <Property name="text" type="java.lang.String" value="Producto:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblCodProd">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="12" style="1"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Codigo:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtCodigoProducto">
-                </Component>
                 <Component class="javax.swing.JButton" name="btnAgregar">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Agregar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="total">
                   <Properties>
@@ -366,8 +399,6 @@
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="$ 0,0"/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtNombreProducto">
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblStockProd">
                   <Properties>
@@ -409,6 +440,30 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Cliente:"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="comboProductos">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboProductosActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Cantidad:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtcantidadProductos">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtcantidadProductosActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -470,7 +525,7 @@
                               </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jScrollPane3" pref="867" max="32767" attributes="0"/>
+                          <Component id="jScrollPane3" pref="902" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -714,14 +769,26 @@
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="txtPrecioProduct" min="-2" pref="190" max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="lblProveedorProducto" min="-2" pref="81" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="comboProveedores" min="-2" pref="190" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="lblProveedorProducto" min="-2" pref="81" max="-2" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jLabel2" min="-2" pref="59" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="comboProveedores" pref="190" max="32767" attributes="0"/>
+                                              <Component id="txtCantidad" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace pref="105" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                   <Component id="jScrollPane4" min="-2" pref="777" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="107" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
@@ -758,10 +825,15 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="lblProveedorProducto" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                                      <Component id="comboProveedores" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="comboProveedores" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Component id="lblProveedorProducto" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="btnNuevoProd" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                                       <Component id="btnBorrarProd" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
@@ -785,16 +857,22 @@
                     <Component class="javax.swing.JTable" name="tablaProductos">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="5" rowCount="4">
+                          <Table columnCount="6" rowCount="4">
                             <Column editable="false" title="Codigo" type="java.lang.Integer"/>
                             <Column editable="false" title="Nombre" type="java.lang.String"/>
                             <Column editable="false" title="Costo" type="java.lang.Float"/>
                             <Column editable="false" title="Precio" type="java.lang.Float"/>
+                            <Column editable="false" title="Cantidad" type="java.lang.Integer"/>
                             <Column editable="false" title="Proveedor" type="java.lang.String"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
@@ -905,6 +983,16 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel2">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Cantidad:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtCantidad">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCantidadActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1267,7 +1355,7 @@
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace min="0" pref="468" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="503" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>

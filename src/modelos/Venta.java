@@ -12,20 +12,20 @@ import java.util.ArrayList;
  * @author HP
  */
 public class Venta implements Serializable{
-    private long id;
-    private ArrayList<Producto> productos;
+    private ArrayList<Producto> productos = new ArrayList<>();
     private double precioTotal;
     private Cliente cliente;
+    private int cantidadProductos;
     
     public Venta(){
         
     }
 
-    public Venta(long id, ArrayList<Producto> productos, double precioTotal, Cliente cliente) {
-        this.id = id;
+    public Venta(ArrayList<Producto> productos, double precioTotal, Cliente cliente, int cantidadProductos) {
         this.productos = productos;
         this.precioTotal = precioTotal;
         this.cliente = cliente;
+        this.cantidadProductos = cantidadProductos;
     }
 
     
@@ -35,14 +35,6 @@ public class Venta implements Serializable{
 
     public boolean eliminarProductoventa(Producto p){
         return productos.remove(p);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public ArrayList<Producto> getProductos() {
@@ -71,7 +63,21 @@ public class Venta implements Serializable{
 
     @Override
     public String toString() {
-        return "Venta{" + "id=" + id + ", productos=" + productos + ", precioTotal=" + precioTotal + ", cliente=" + cliente + '}';
+        return "Venta{" +" productos=" + productos + ", precioTotal=" + precioTotal + ", cliente=" + cliente + '}';
+    }
+
+    /**
+     * @return the cantidadProductos
+     */
+    public int getCantidadProductos() {
+        return cantidadProductos;
+    }
+
+    /**
+     * @param cantidadProductos the cantidadProductos to set
+     */
+    public void setCantidadProductos(int cantidadProductos) {
+        this.cantidadProductos = cantidadProductos;
     }
     
 }

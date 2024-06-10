@@ -17,6 +17,7 @@ import modelos.Cliente;
 import modelos.Persona;
 import modelos.Producto;
 import modelos.Proveedor;
+import modelos.Venta;
 import serializacion.Persistencia;
 
 /**
@@ -24,18 +25,19 @@ import serializacion.Persistencia;
  * @author HP
  */
 public class formVentana extends javax.swing.JFrame {
+
     private Ferreteria ferreteria;
     private String archivo = "ferreteria-data.data";
-    
+
     /**
      * Creates new form formVentana
      */
     public formVentana() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
-        
+
         File file = new File(archivo);
-        if(!file.exists()){
+        if (!file.exists()) {
             ferreteria = new Ferreteria(11111111, "FerrEquipos", "3214235643", "Calle 1#2-3");
         } else {
             try {
@@ -46,11 +48,12 @@ public class formVentana extends javax.swing.JFrame {
                 Logger.getLogger(formVentana.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         txtRut.setText(String.valueOf(ferreteria.getRUT()));
         txtNombreFerreteria.setText(ferreteria.getNombre());
         txtTelefonoFerreteria.setText(ferreteria.getTelefono());
         txtDireccionFerreteria.setText(ferreteria.getDireccion());
+        actualizarComboProductos();
     }
 
     /**
@@ -81,11 +84,8 @@ public class formVentana extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         lblNuevaVenta = new javax.swing.JLabel();
         lblProducto = new javax.swing.JLabel();
-        lblCodProd = new javax.swing.JLabel();
-        txtCodigoProducto = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         total = new javax.swing.JLabel();
-        txtNombreProducto = new javax.swing.JTextField();
         lblStockProd = new javax.swing.JLabel();
         txtStockProd = new javax.swing.JTextField();
         lblPrecioProd = new javax.swing.JLabel();
@@ -93,6 +93,9 @@ public class formVentana extends javax.swing.JFrame {
         btnQuitar = new javax.swing.JButton();
         txtNombreCliente = new javax.swing.JTextField();
         lblNombreCliente = new javax.swing.JLabel();
+        comboProductos = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        txtcantidadProductos = new javax.swing.JTextField();
         panelClientes = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaClientes = new javax.swing.JTable();
@@ -127,6 +130,8 @@ public class formVentana extends javax.swing.JFrame {
         lblPrecioProduct = new javax.swing.JLabel();
         lblProveedorProducto = new javax.swing.JLabel();
         comboProveedores = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
         panelProveedores = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaProveedores = new javax.swing.JTable();
@@ -274,22 +279,34 @@ public class formVentana extends javax.swing.JFrame {
 
         panel.add(panelBotones, java.awt.BorderLayout.LINE_START);
 
+        ventanas.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                ventanasComponentShown(evt);
+            }
+        });
+
+        panelNuevaVenta.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                panelNuevaVentaComponentShown(evt);
+            }
+        });
+
         tablaNuevaVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Producto", "Cantidad", "Precio"
+                "Codigo", "Producto", "Cantidad", "Precio Unitario", "Precio "
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -302,7 +319,13 @@ public class formVentana extends javax.swing.JFrame {
         });
         tablaNuevaVenta.setColumnSelectionAllowed(true);
         tablaNuevaVenta.getTableHeader().setReorderingAllowed(false);
+        tablaNuevaVenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaNuevaVentaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaNuevaVenta);
+        tablaNuevaVenta.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         btnVender.setText("Vender");
 
@@ -315,10 +338,12 @@ public class formVentana extends javax.swing.JFrame {
         lblProducto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblProducto.setText("Producto:");
 
-        lblCodProd.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblCodProd.setText("Codigo:");
-
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         total.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -339,26 +364,49 @@ public class formVentana extends javax.swing.JFrame {
         lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblNombreCliente.setText("Cliente:");
 
+        comboProductos.setEditable(true);
+        comboProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboProductosActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Cantidad:");
+
+        txtcantidadProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcantidadProductosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelNuevaVentaLayout = new javax.swing.GroupLayout(panelNuevaVenta);
         panelNuevaVenta.setLayout(panelNuevaVentaLayout);
         panelNuevaVentaLayout.setHorizontalGroup(
             panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(panelNuevaVentaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNuevaVentaLayout.createSequentialGroup()
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(200, 200, 200)
+                        .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelNuevaVentaLayout.createSequentialGroup()
-                        .addComponent(lblCodProd, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
+                        .addGap(28, 28, 28)
                         .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
+                        .addComponent(txtcantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(85, 85, 85)
                         .addComponent(lblStockProd, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtStockProd, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
                         .addComponent(lblPrecioProd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPrecioProd, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -366,54 +414,47 @@ public class formVentana extends javax.swing.JFrame {
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblNuevaVenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNuevaVentaLayout.createSequentialGroup()
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(200, 200, 200)
-                        .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelNuevaVentaLayout.createSequentialGroup()
                         .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(922, 922, 922))
+                    .addComponent(lblNuevaVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelNuevaVentaLayout.setVerticalGroup(
             panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelNuevaVentaLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(lblNuevaVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(lblNuevaVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                .addGap(21, 21, 21)
                 .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCodProd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPrecioProd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecioProd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStockProd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtStockProd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtcantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelNuevaVentaLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
+                        .addGap(39, 39, 39)
                         .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNuevaVentaLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
+                    .addGroup(panelNuevaVentaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(10, 10, 10))
+                .addGap(36, 36, 36))
         );
 
         ventanas.addTab("Nueva Venta", panelNuevaVenta);
@@ -531,7 +572,7 @@ public class formVentana extends javax.swing.JFrame {
                         .addGap(88, 88, 88)
                         .addComponent(btnAbonarSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 902, Short.MAX_VALUE)
                 .addGap(9, 9, 9))
             .addGroup(panelClientesLayout.createSequentialGroup()
                 .addContainerGap()
@@ -585,20 +626,20 @@ public class formVentana extends javax.swing.JFrame {
 
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Nombre", "Costo", "Precio", "Proveedor"
+                "Codigo", "Nombre", "Costo", "Precio", "Cantidad", "Proveedor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -647,6 +688,14 @@ public class formVentana extends javax.swing.JFrame {
 
         lblProveedorProducto.setText("Proveedor:");
 
+        jLabel2.setText("Cantidad:");
+
+        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCantidadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelProductosLayout = new javax.swing.GroupLayout(panelProductos);
         panelProductos.setLayout(panelProductosLayout);
         panelProductosLayout.setHorizontalGroup(
@@ -680,12 +729,20 @@ public class formVentana extends javax.swing.JFrame {
                                 .addComponent(lblPrecioProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtPrecioProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelProductosLayout.createSequentialGroup()
-                                .addComponent(lblProveedorProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(comboProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProductosLayout.createSequentialGroup()
+                                .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProductosLayout.createSequentialGroup()
+                                        .addComponent(lblProveedorProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                    .addGroup(panelProductosLayout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(34, 34, 34)))
+                                .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(comboProveedores, 0, 190, Short.MAX_VALUE)
+                                    .addComponent(txtCantidad))))
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 107, Short.MAX_VALUE)))
                 .addGap(9, 9, 9))
         );
         panelProductosLayout.setVerticalGroup(
@@ -714,9 +771,13 @@ public class formVentana extends javax.swing.JFrame {
                             .addComponent(txtPrecioProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblProveedorProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49)
+                            .addComponent(jLabel2)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblProveedorProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnNuevoProd, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBorrarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -997,7 +1058,7 @@ public class formVentana extends javax.swing.JFrame {
                                     .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(97, 97, 97)
                                     .addComponent(txtNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 468, Short.MAX_VALUE)))
+                        .addGap(0, 503, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelInfoLayout.setVerticalGroup(
@@ -1066,7 +1127,7 @@ public class formVentana extends javax.swing.JFrame {
 
     private void btnGuardarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClienteActionPerformed
         long documento = Long.parseLong(txtDocumentoCliente.getText().trim());
-        
+
         Cliente c = new Cliente();
 
         c.setDocumento(documento);
@@ -1076,20 +1137,20 @@ public class formVentana extends javax.swing.JFrame {
         c.setDireccion(txtDireccionCliente.getText().trim());
         c.setSaldo(0);
 
-        if(!ferreteria.buscarClienteByDocument(documento)){ // si no encuentra el cliente lo agrega
+        if (!ferreteria.buscarClienteByDocument(documento)) { // si no encuentra el cliente lo agrega
             ferreteria.agregarCliente(c);
             JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente");
-            
-        }else{ //si lo encuentra lo actualiza
-            int op = JOptionPane.showConfirmDialog(this,"Desea actualizar al cliente con documento "+ c.getDocumento()+" ?");
-            
-            if (op == JOptionPane.YES_OPTION){
+
+        } else { //si lo encuentra lo actualiza
+            int op = JOptionPane.showConfirmDialog(this, "Desea actualizar al cliente con documento " + c.getDocumento() + " ?");
+
+            if (op == JOptionPane.YES_OPTION) {
                 actualizarUnCliente(c);
                 JOptionPane.showMessageDialog(this, "Cliente Actualizado exitosamente");
             }
-            
+
         }
-        
+
         txtDocumentoCliente.setEnabled(true);
         txtDocumentoCliente.setEditable(true);
         limpiarCamposCliente();
@@ -1100,10 +1161,10 @@ public class formVentana extends javax.swing.JFrame {
     private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
         txtDocumentoCliente.setEnabled(false);
         txtDocumentoCliente.setEditable(false);
-        
+
         int selectedColumn = tablaClientes.getSelectedColumn();
         int selectedRow = tablaClientes.getSelectedRow();
-        
+
         if (selectedRow != -1) { // Verificar que hay una fila seleccionada
             // Obtener los valores de cada columna de la fila seleccionada
             long documento = (long) tablaClientes.getValueAt(selectedRow, 0);
@@ -1111,36 +1172,36 @@ public class formVentana extends javax.swing.JFrame {
             String apellido = (String) tablaClientes.getValueAt(selectedRow, 2);
             String telefono = (String) tablaClientes.getValueAt(selectedRow, 3);
             String direccion = (String) tablaClientes.getValueAt(selectedRow, 4);
-            
+
             // Colocar los valores en los JTextField correspondientes
             txtDocumentoCliente.setText(String.valueOf(documento));
             txtNombreCli.setText(nombre);
             txtApellidoCliente.setText(apellido);
             txtTelefonocliente.setText(telefono);
             txtDireccionCliente.setText(direccion);
-            
+
         } else {
             // Mostrar un mensaje si no hay una fila seleccionada
             JOptionPane.showMessageDialog(null, "Seleccione una fila para editar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }  
+        }
     }//GEN-LAST:event_btnEditarClienteActionPerformed
 
     private void btnAbonarSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarSaldoActionPerformed
         double saldo = Double.parseDouble(JOptionPane.showInputDialog("Digite el saldo a abonar"));
-        if(saldo > 0){
+        if (saldo > 0) {
             Long documento = (Long) tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0);
 
-            int op =JOptionPane.showConfirmDialog(null,"Desea abonar "+ saldo+" al cliente con documento "+ documento);
+            int op = JOptionPane.showConfirmDialog(null, "Desea abonar " + saldo + " al cliente con documento " + documento);
 
-            if (op == JOptionPane.YES_OPTION){
+            if (op == JOptionPane.YES_OPTION) {
                 abonarSaldo(saldo, documento);
-            } else{
+            } else {
                 return;
             }
 
             actualizarClientes();
         } else {
-            JOptionPane.showMessageDialog(null,"Ingreso un dato invalido");
+            JOptionPane.showMessageDialog(null, "Ingreso un dato invalido");
         }
         desactivarBotonesCliente();
     }//GEN-LAST:event_btnAbonarSaldoActionPerformed
@@ -1161,7 +1222,7 @@ public class formVentana extends javax.swing.JFrame {
 
     private void btnGuardarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarProveedorActionPerformed
         long documento = Long.parseLong(txtDocumentoProveedor.getText().trim());
-        
+
         Proveedor p = new Proveedor();
         p.setDocumento(documento);
         p.setNombre(txtNombreProveedor.getText().trim());
@@ -1169,18 +1230,18 @@ public class formVentana extends javax.swing.JFrame {
         p.setDeuda(0);
 
         boolean encontrado = ferreteria.buscarProveedorByDocument(documento);
-        
-        if(!encontrado){
+
+        if (!encontrado) {
             ferreteria.agregarProveedor(p);
             JOptionPane.showMessageDialog(this, "Proveedor agregado exitosamente");
-        }else{
-            int op = JOptionPane.showConfirmDialog(this,"El proveedor ya existe, desea actualizar?");
-            
-            if(op == JOptionPane.YES_OPTION){
+        } else {
+            int op = JOptionPane.showConfirmDialog(this, "El proveedor ya existe, desea actualizar?");
+
+            if (op == JOptionPane.YES_OPTION) {
                 actualizarUnProveedor(p);
                 JOptionPane.showMessageDialog(this, "Proveedor Actualizado exitosamente");
             }
-            
+
         }
         txtDocumentoProveedor.setEditable(true);
         txtDocumentoProveedor.setEnabled(true);
@@ -1192,26 +1253,26 @@ public class formVentana extends javax.swing.JFrame {
     private void btnEditarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProveedorActionPerformed
         txtDocumentoProveedor.setEnabled(false);
         txtDocumentoProveedor.setEditable(false);
-        
+
         int selectedColumn = tablaProveedores.getSelectedColumn();
         int selectedRow = tablaProveedores.getSelectedRow();
-        
+
         if (selectedRow != -1) { // Verificar que hay una fila seleccionada
             // Obtener los valores de cada columna de la fila seleccionada
             long documento = (long) tablaProveedores.getValueAt(selectedRow, 0);
             String nombre = (String) tablaProveedores.getValueAt(selectedRow, 1);
             String telefono = (String) tablaProveedores.getValueAt(selectedRow, 2);
             double deuda = (double) tablaProveedores.getValueAt(selectedRow, 3);
-            
+
             // Colocar los valores en los JTextField correspondientes
             txtDocumentoProveedor.setText(String.valueOf(documento));
             txtNombreProveedor.setText(nombre);
             txtTelefonoProveedor.setText(telefono);
-            
+
         } else {
             // Mostrar un mensaje si no hay una fila seleccionada
             JOptionPane.showMessageDialog(null, "Seleccione una fila para editar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }  
+        }
     }//GEN-LAST:event_btnEditarProveedorActionPerformed
 
     private void btnAbonarDeudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarDeudaActionPerformed
@@ -1219,22 +1280,22 @@ public class formVentana extends javax.swing.JFrame {
 
         double deuda = (double) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 3);
 
-        if(deuda > abono){
-            System.out.println("cantidad a abonar: $"+abono);
+        if (deuda > abono) {
+            System.out.println("cantidad a abonar: $" + abono);
 
             Long documento = (Long) tablaProveedores.getValueAt(tablaProveedores.getSelectedRow(), 0);
 
-            int op = JOptionPane.showConfirmDialog(null,"Desea abonar "+ abono+" al proveedor?");
+            int op = JOptionPane.showConfirmDialog(null, "Desea abonar " + abono + " al proveedor?");
 
-            if (op == JOptionPane.YES_OPTION){
+            if (op == JOptionPane.YES_OPTION) {
                 abonarADeuda(abono, documento);
-            } else{
-                JOptionPane.showMessageDialog(null,"El abono $"+abono+" supera el total de la deuda: $"+deuda);
+            } else {
+                JOptionPane.showMessageDialog(null, "El abono $" + abono + " supera el total de la deuda: $" + deuda);
             }
 
             actualizarProveedores();
         } else {
-            JOptionPane.showMessageDialog(null,"El abono $"+abono+" supera el total de la deuda: $"+deuda);
+            JOptionPane.showMessageDialog(null, "El abono $" + abono + " supera el total de la deuda: $" + deuda);
         }
     }//GEN-LAST:event_btnAbonarDeudaActionPerformed
 
@@ -1251,10 +1312,10 @@ public class formVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
-        if(tablaClientes.getSelectedRow() != -1){
+        if (tablaClientes.getSelectedRow() != -1) {
             btnEditarCliente.setEnabled(true);
             btnAbonarSaldo.setEnabled(true);
-        }else{
+        } else {
             btnEditarCliente.setEnabled(false);
             btnAbonarSaldo.setEnabled(false);
         }
@@ -1266,10 +1327,10 @@ public class formVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_panelProductosComponentShown
 
     private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMouseClicked
-        if(tablaProductos.getSelectedRow() != -1){
+        if (tablaProductos.getSelectedRow() != -1) {
             btnEditarProd.setEnabled(true);
             btnBorrarProd.setEnabled(true);
-        }else{
+        } else {
             btnEditarProd.setEnabled(false);
             btnBorrarProd.setEnabled(false);
         }        // TODO add your handling code here:
@@ -1282,54 +1343,123 @@ public class formVentana extends javax.swing.JFrame {
         p.setNombre(txtNombreProd.getText().trim());
         p.setCosto(Double.parseDouble(txtCostoProd.getText().trim()));
         p.setPrecio(Double.parseDouble(txtPrecioProduct.getText().trim()));
-        p.setProveedor(buscarProveedorByNombre((String)comboProveedores.getSelectedItem()));
-        
-        if(!ferreteria.buscarProductoByCodigo(p.getCodigo())){ // si no encuentra el cliente lo agrega
+        p.setProveedor(buscarProveedorByNombre((String) comboProveedores.getSelectedItem()));
+        p.setCantidad(Integer.parseInt(txtCantidad.getText().trim()));
+
+        if (!ferreteria.buscarProductoByCodigo(p.getCodigo())) { // si no encuentra el cliente lo agrega
             ferreteria.agregarProducto(p);
             JOptionPane.showMessageDialog(this, "Producto agregado exitosamente");
-            
-        }else{ //si lo encuentra lo actualiza
-            int op = JOptionPane.showConfirmDialog(this,"Desea actualizar el producto con codigo "+ p.getCodigo()+" ?");
-            
-            if (op == JOptionPane.YES_OPTION){
+
+        } else { //si lo encuentra lo actualiza
+            int op = JOptionPane.showConfirmDialog(this, "Desea actualizar el producto con codigo " + p.getCodigo() + " ?");
+
+            if (op == JOptionPane.YES_OPTION) {
                 actualizarUnProducto(p);
                 JOptionPane.showMessageDialog(this, "Prducto Actualizado exitosamente");
             }
-            
+
         }
-        
+
         txtCodigoProd.setEnabled(true);
         txtCodigoProd.setEditable(true);
         limpiarCamposProducto();
         actualizarProductos();
+        actualizarComboProductos();
         desactivarBotonesProducto();
     }//GEN-LAST:event_btnNuevoProdActionPerformed
 
     private void btnEditarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProdActionPerformed
         txtCodigoProd.setEnabled(false);
         txtCodigoProd.setEditable(false);
-        
+
         int selectedColumn = tablaProductos.getSelectedColumn();
         int selectedRow = tablaProductos.getSelectedRow();
-        
+
         if (selectedRow != -1) { // Verificar que hay una fila seleccionada
             // Obtener los valores de cada columna de la fila seleccionada
             int codigo = (int) tablaProductos.getValueAt(selectedRow, 0);
             String nombre = (String) tablaProductos.getValueAt(selectedRow, 1);
             double costo = (double) tablaProductos.getValueAt(selectedRow, 2);
             double precio = (double) tablaProductos.getValueAt(selectedRow, 3);
-           
+            int cantidad = (int) tablaProductos.getValueAt(selectedRow, 4);
+
             // Colocar los valores en los JTextField correspondientes
             txtCodigoProd.setText(String.valueOf(codigo));
             txtNombreProd.setText(nombre);
             txtCostoProd.setText(String.valueOf(costo));
             txtPrecioProduct.setText(String.valueOf(precio));
-            
+            txtCantidad.setText(String.valueOf(cantidad));
+
         } else {
             // Mostrar un mensaje si no hay una fila seleccionada
             JOptionPane.showMessageDialog(null, "Seleccione una fila para editar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        } 
+        }
     }//GEN-LAST:event_btnEditarProdActionPerformed
+
+    private void txtcantidadProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcantidadProductosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcantidadProductosActionPerformed
+
+    private void panelVentaComponentShown(java.awt.event.ComponentEvent evt) {
+        actualizarComboProductos();
+        actualizarCarrito();
+    }
+
+    Venta v = new Venta();
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+
+        Producto p = buscarProductoByNombre((String) comboProductos.getSelectedItem());
+        if (p != null && !txtcantidadProductos.getText().isEmpty()) {
+            int cantidad = Integer.parseInt(txtcantidadProductos.getText().trim());
+            if (cantidad > p.getCantidad()) {
+                JOptionPane.showMessageDialog(this, "La cantidad solicitada excede el stock disponible", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Producto productoVenta = new Producto(p.getCodigo(), p.getNombre(), p.getCosto(), p.getPrecio(), cantidad, p.getProveedor());
+            v.agregarProductoVenta(productoVenta);
+            p.setCantidad(p.getCantidad() - cantidad);
+            txtStockProd.setText(String.valueOf(p.getCantidad()));
+            txtPrecioProd.setText(String.valueOf(p.getPrecio()));
+
+            JOptionPane.showMessageDialog(this, "Producto agregado a la venta");
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciones un producto y la cantidad", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        actualizarCarrito();
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantidadActionPerformed
+
+    private void comboProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboProductosActionPerformed
+        Producto p = buscarProductoByNombre((String) comboProductos.getSelectedItem());
+        if (p != null) {
+            txtStockProd.setText(String.valueOf(p.getCantidad()));
+            txtPrecioProd.setText(String.valueOf(p.getPrecio()));
+        }
+    }//GEN-LAST:event_comboProductosActionPerformed
+
+    private void tablaNuevaVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaNuevaVentaMouseClicked
+        if (tablaNuevaVenta.getSelectedRow() != -1) {
+            btnAgregar.setEnabled(true);
+            btnEliminar.setEnabled(true);
+        } else {
+            btnAgregar.setEnabled(false);
+            btnEliminar.setEnabled(false);
+        }
+    }//GEN-LAST:event_tablaNuevaVentaMouseClicked
+
+    private void panelNuevaVentaComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelNuevaVentaComponentShown
+        actualizarComboProductos();
+        System.out.println("nueva venta shown");
+    }//GEN-LAST:event_panelNuevaVentaComponentShown
+
+    private void ventanasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_ventanasComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ventanasComponentShown
 
     /**
      * @param args the command line arguments
@@ -1389,7 +1519,10 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JButton btnQuitar;
     private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVentas;
+    private javax.swing.JComboBox<String> comboProductos;
     private javax.swing.JComboBox<String> comboProveedores;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1397,7 +1530,6 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel lblApellidoCli;
     private javax.swing.JLabel lblClienteHisto;
-    private javax.swing.JLabel lblCodProd;
     private javax.swing.JLabel lblCodigoProd;
     private javax.swing.JLabel lblCostoProd;
     private javax.swing.JLabel lblDatosFerreteria;
@@ -1440,9 +1572,9 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JTable tablaVentas;
     private javax.swing.JLabel total;
     private javax.swing.JTextField txtApellidoCliente;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtClienteHisto;
     private javax.swing.JTextField txtCodigoProd;
-    private javax.swing.JTextField txtCodigoProducto;
     private javax.swing.JTextField txtCostoProd;
     private javax.swing.JTextField txtDireccionCliente;
     private javax.swing.JTextField txtDireccionFerreteria;
@@ -1452,7 +1584,6 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombreCliente;
     private javax.swing.JTextField txtNombreFerreteria;
     private javax.swing.JTextField txtNombreProd;
-    private javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txtNombreProveedor;
     private javax.swing.JTextField txtPrecioProd;
     private javax.swing.JTextField txtPrecioProduct;
@@ -1461,6 +1592,7 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefonoFerreteria;
     private javax.swing.JTextField txtTelefonoProveedor;
     private javax.swing.JTextField txtTelefonocliente;
+    private javax.swing.JTextField txtcantidadProductos;
     private javax.swing.JTabbedPane ventanas;
     // End of variables declaration//GEN-END:variables
 
@@ -1477,7 +1609,7 @@ public class formVentana extends javax.swing.JFrame {
         model.setRowCount(0);
         Object[] dato = new Object[6];
         ArrayList<Cliente> clientes = ferreteria.getClientes();
-        
+
         for (Cliente cliente : clientes) {
             dato[0] = cliente.getDocumento();
             dato[1] = cliente.getNombre();
@@ -1492,17 +1624,17 @@ public class formVentana extends javax.swing.JFrame {
 
     private void abonarSaldo(double saldo, long documento) {
         Cliente c = ferreteria.getClienteByDocument(documento);
-        
-        if(c == null){
-            JOptionPane.showMessageDialog(this,"Error con el cliente");
-        } else{
-            c.setSaldo(c.getSaldo()+saldo);
+
+        if (c == null) {
+            JOptionPane.showMessageDialog(this, "Error con el cliente");
+        } else {
+            c.setSaldo(c.getSaldo() + saldo);
         }
     }
 
     private void actualizarUnCliente(Cliente c) {
         for (Cliente cliente : ferreteria.getClientes()) {
-            if(cliente.getDocumento() == c.getDocumento()){
+            if (cliente.getDocumento() == c.getDocumento()) {
                 cliente.setNombre(c.getNombre());
                 cliente.setApellido(c.getApellido());
                 cliente.setTelefono(c.getTelefono());
@@ -1518,7 +1650,7 @@ public class formVentana extends javax.swing.JFrame {
 
     private void actualizarUnProveedor(Proveedor p) {
         for (Proveedor proveedor : ferreteria.getProveedores()) {
-            if(proveedor.getDocumento() == p.getDocumento()){
+            if (proveedor.getDocumento() == p.getDocumento()) {
                 proveedor.setNombre(p.getNombre());
                 proveedor.setTelefono(p.getTelefono());
             }
@@ -1536,7 +1668,7 @@ public class formVentana extends javax.swing.JFrame {
         model.setRowCount(0);
         Object[] dato = new Object[4];
         ArrayList<Proveedor> proveedores = ferreteria.getProveedores();
-        
+
         for (Proveedor proveedor : proveedores) {
             dato[0] = proveedor.getDocumento();
             dato[1] = proveedor.getNombre();
@@ -1554,26 +1686,27 @@ public class formVentana extends javax.swing.JFrame {
 
     private void abonarADeuda(double abono, Long documento) {
         Proveedor p = ferreteria.getProveedByDocument(documento);
-        
-        if(p == null){
-            JOptionPane.showMessageDialog(this,"Error con el proveedor");
-        } else{
-            p.setDeuda(p.getDeuda()-abono);
+
+        if (p == null) {
+            JOptionPane.showMessageDialog(this, "Error con el proveedor");
+        } else {
+            p.setDeuda(p.getDeuda() - abono);
         }
     }
 
     private void actualizarProductos() {
         DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         model.setRowCount(0);
-        Object[] dato = new Object[5];
+        Object[] dato = new Object[6];
         ArrayList<Producto> productos = ferreteria.getProductos();
-        
+
         for (Producto prod : productos) {
             dato[0] = prod.getCodigo();
             dato[1] = prod.getNombre();
             dato[2] = prod.getCosto();
             dato[3] = prod.getPrecio();
-            dato[4] = prod.getProveedor().getNombre();
+            dato[4] = prod.getCantidad();
+            dato[5] = prod.getProveedor().getNombre();
             model.addRow(dato);
         }
         tablaProductos.setModel(model);
@@ -1581,7 +1714,7 @@ public class formVentana extends javax.swing.JFrame {
 
     private void actualizarComboProveedores() {
         comboProveedores.removeAllItems();
-        
+
         for (Proveedor proveedor : ferreteria.getProveedores()) {
             comboProveedores.addItem(proveedor.getNombre());
         }
@@ -1589,7 +1722,7 @@ public class formVentana extends javax.swing.JFrame {
 
     private Proveedor buscarProveedorByNombre(String name) {
         for (Proveedor proveedor : ferreteria.getProveedores()) {
-            if(proveedor.getNombre().equals(name)){
+            if (proveedor.getNombre().equals(name)) {
                 return proveedor;
             }
         }
@@ -1598,7 +1731,7 @@ public class formVentana extends javax.swing.JFrame {
 
     private void actualizarUnProducto(Producto p) {
         for (Producto producto : ferreteria.getProductos()) {
-            if(producto.getCodigo() == p.getCodigo()){
+            if (producto.getCodigo() == p.getCodigo()) {
                 producto.setNombre(p.getNombre());
                 producto.setCosto(p.getCosto());
                 producto.setPrecio(p.getPrecio());
@@ -1612,11 +1745,61 @@ public class formVentana extends javax.swing.JFrame {
         txtNombreProd.setText("");
         txtCostoProd.setText("");
         txtPrecioProduct.setText("");
+        txtCantidad.setText("");
     }
 
     private void desactivarBotonesProducto() {
         btnBorrarProd.setEnabled(false);
         btnEditarProd.setEnabled(false);
+    }
+
+    private Producto buscarProductoByNombre(String name) {
+        for (Producto producto : ferreteria.getProductos()) {
+            if (producto.getNombre().equals(name)) {
+                return producto;
+            }
+        }
+        return null;
+    }
+
+    private void actualizarComboProductos() {
+        comboProductos.removeAllItems();
+
+        for (Producto producto : ferreteria.getProductos()) {
+            comboProductos.addItem(producto.getNombre());
+        }
+    }
+
+    private void actualizarCarrito() {
+        DefaultTableModel model = (DefaultTableModel) tablaNuevaVenta.getModel();
+        model.setRowCount(0);
+        
+        Object[] dato = new Object[5];
+        double totalPagar = 0;
+        double precioArticulos;
+        
+        for (Producto p : v.getProductos()) {
+            dato[0] = p.getCodigo();
+            dato[1] = p.getNombre();
+            dato[2] = p.getCantidad();
+            dato[3] = p.getPrecio();
+            precioArticulos = p.getCantidad() * p.getPrecio();
+            dato[4] = precioArticulos;
+            totalPagar += precioArticulos;
+            model.addRow(dato);
+        }
+        tablaNuevaVenta.setModel(model);
+        
+        total.setText("$"+totalPagar+",0");
+    }
+
+    private Cliente buscarClienteByNombre(String nombre) {
+        for (Cliente cliente : ferreteria.getClientes()) {
+            if (cliente.getNombre().equals(nombre)) {
+                return cliente;
+            }
+        }
+        return null;
     }
 
 }

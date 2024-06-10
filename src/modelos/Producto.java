@@ -13,16 +13,19 @@ public class Producto implements Serializable{
     private double costo;
     private double precio;
     private Proveedor proveedor;
+    private int cantidad;
 
     public Producto() {
-        
     }
 
-    public Producto(int codigo, String nombre, double costo, double precio, Proveedor proveedor) {
+    
+
+    public Producto(int codigo, String nombre, double costo, double precio, int cantidad, Proveedor proveedor) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.costo = costo;
         this.precio = precio;
+        this.cantidad = cantidad;
         this.proveedor = proveedor;
     }
 
@@ -64,6 +67,20 @@ public class Producto implements Serializable{
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
+    }
+
+    /**
+     * @return the cantidad
+     */
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    /**
+     * @param cantidad the cantidad to set
+     */
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     
