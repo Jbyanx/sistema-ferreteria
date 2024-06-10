@@ -16,21 +16,17 @@ public class Persona implements Serializable{
     private String apellido;
     private String telefono;
     private String direccion;
-    private String user;
-    private String password;
     
 
     public Persona() {
     }
 
-    public Persona(long documento, String nombre, String apellido, String telefono, String direccion, String user, String password) {
+    public Persona(long documento, String nombre, String apellido, String telefono, String direccion) {
         this.documento = documento;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
         this.direccion = direccion;
-        this.user = user;
-        this.password = password;
     }
 
     public long getDocumento() {
@@ -73,21 +69,6 @@ public class Persona implements Serializable{
         this.direccion = direccion;
     }
 
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public String toString() {

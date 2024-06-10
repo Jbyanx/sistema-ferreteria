@@ -16,15 +16,24 @@ public class Cliente extends Persona implements Serializable{
     public Cliente(){
         
     }
-    
-    public Cliente(double saldo, long documento, String nombre, String apellido, String telefono, String direccion, String user, String password) {
-        super(documento, nombre, apellido, telefono, direccion, user, password);
+
+    public Cliente(double saldo) {
         this.saldo = saldo;
     }
+
+    public Cliente(double saldo, long documento, String nombre, String apellido, String telefono, String direccion) {
+        super(documento, nombre, apellido, telefono, direccion);
+        this.saldo = saldo;
+    }
+
+    
+    
+    
     
     public double getSaldo() {
         return saldo;
     }
+
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;

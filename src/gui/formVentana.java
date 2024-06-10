@@ -46,6 +46,11 @@ public class formVentana extends javax.swing.JFrame {
                 Logger.getLogger(formVentana.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        txtRut.setText(String.valueOf(ferreteria.getRUT()));
+        txtNombreFerreteria.setText(ferreteria.getNombre());
+        txtTelefonoFerreteria.setText(ferreteria.getTelefono());
+        txtDireccionFerreteria.setText(ferreteria.getDireccion());
     }
 
     /**
@@ -151,7 +156,6 @@ public class formVentana extends javax.swing.JFrame {
         txtNombreFerreteria = new javax.swing.JTextField();
         lblTelefonoFerreteria = new javax.swing.JLabel();
         txtTelefonoFerreteria = new javax.swing.JTextField();
-        btnGuardarFerreteria = new javax.swing.JButton();
         txtDireccionFerreteria = new javax.swing.JTextField();
         lblDireccionFerreteria = new javax.swing.JLabel();
 
@@ -581,20 +585,20 @@ public class formVentana extends javax.swing.JFrame {
 
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Nombre", "Costo", "Precio"
+                "Codigo", "Nombre", "Costo", "Precio", "Proveedor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -959,9 +963,6 @@ public class formVentana extends javax.swing.JFrame {
 
         txtTelefonoFerreteria.setEnabled(false);
 
-        btnGuardarFerreteria.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnGuardarFerreteria.setText("Guardar");
-
         txtDireccionFerreteria.setEnabled(false);
 
         lblDireccionFerreteria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -972,49 +973,48 @@ public class formVentana extends javax.swing.JFrame {
         panelInfoLayout.setHorizontalGroup(
             panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInfoLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
                 .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblDatosFerreteria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panelInfoLayout.createSequentialGroup()
-                            .addGap(174, 174, 174)
-                            .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblRut, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblTelefonoFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtRut)
-                                .addComponent(txtTelefonoFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(184, 184, 184)
-                            .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblDireccionFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDireccionFerreteria)
-                                .addComponent(txtNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(0, 0, Short.MAX_VALUE)))
                     .addGroup(panelInfoLayout.createSequentialGroup()
-                        .addGap(433, 433, 433)
-                        .addComponent(btnGuardarFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 562, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(9, 9, 9))
+                        .addContainerGap()
+                        .addComponent(lblDatosFerreteria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelInfoLayout.createSequentialGroup()
+                        .addGap(183, 183, 183)
+                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelInfoLayout.createSequentialGroup()
+                                .addComponent(lblRut, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(228, 228, 228)
+                                .addComponent(lblNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(panelInfoLayout.createSequentialGroup()
+                                    .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblTelefonoFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtTelefonoFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(97, 97, 97)
+                                    .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblDireccionFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtDireccionFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(panelInfoLayout.createSequentialGroup()
+                                    .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(97, 97, 97)
+                                    .addComponent(txtNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 468, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panelInfoLayout.setVerticalGroup(
             panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInfoLayout.createSequentialGroup()
-                .addGap(91, 91, 91)
+                .addGap(60, 60, 60)
                 .addComponent(lblDatosFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelInfoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblRut, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtRut)
-                    .addComponent(txtNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblRut, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombreFerreteria, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombreFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelInfoLayout.createSequentialGroup()
                         .addComponent(lblTelefonoFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1023,9 +1023,7 @@ public class formVentana extends javax.swing.JFrame {
                         .addComponent(lblDireccionFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDireccionFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(90, 90, 90)
-                .addComponent(btnGuardarFerreteria, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
+                .addGap(85, 85, 85))
         );
 
         ventanas.addTab("Informacion de la empresa", panelInfo);
@@ -1283,7 +1281,7 @@ public class formVentana extends javax.swing.JFrame {
         p.setCodigo(Integer.parseInt(txtCodigoProd.getText().trim()));
         p.setNombre(txtNombreProd.getText().trim());
         p.setCosto(Double.parseDouble(txtCostoProd.getText().trim()));
-        p.setCosto(Double.parseDouble(txtPrecioProduct.getText().trim()));
+        p.setPrecio(Double.parseDouble(txtPrecioProduct.getText().trim()));
         p.setProveedor(buscarProveedorByNombre((String)comboProveedores.getSelectedItem()));
         
         if(!ferreteria.buscarProductoByCodigo(p.getCodigo())){ // si no encuentra el cliente lo agrega
@@ -1382,7 +1380,6 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEmpleados;
     private javax.swing.JButton btnGuardarCliente;
-    private javax.swing.JButton btnGuardarFerreteria;
     private javax.swing.JButton btnGuardarProveedor;
     private javax.swing.JButton btnInfo;
     private javax.swing.JButton btnNuevaVenta;
@@ -1576,7 +1573,7 @@ public class formVentana extends javax.swing.JFrame {
             dato[1] = prod.getNombre();
             dato[2] = prod.getCosto();
             dato[3] = prod.getPrecio();
-            dato[4] = prod.getProveedor();
+            dato[4] = prod.getProveedor().getNombre();
             model.addRow(dato);
         }
         tablaProductos.setModel(model);
