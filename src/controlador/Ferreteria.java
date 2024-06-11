@@ -23,11 +23,11 @@ public class Ferreteria implements Serializable{
     private String nombre;
     private String telefono;
     private String direccion;
-    private ArrayList<Venta> ventas; //a clientes
-    private ArrayList<Persona> personas;
-    private ArrayList<Proveedor> proveedores;
-    private ArrayList<Producto> productos;
-    private ArrayList<Proveedor> compras; // a proveedores
+    private ArrayList<Venta> ventas; //a clientes (ON READY)
+    private ArrayList<Persona> personas;//READY
+    private ArrayList<Proveedor> proveedores;//READY
+    private ArrayList<Producto> productos;//READY
+    private ArrayList<Proveedor> compras; // a proveedores (ON READY)
 
     public Ferreteria() {
         this.ventas = new ArrayList<>();
@@ -56,6 +56,10 @@ public class Ferreteria implements Serializable{
     
     public void agregarProveedor(Proveedor p){
         proveedores.add(p);
+    }
+    
+    public void hacerVenta(Venta v){
+        ventas.add(v);
     }
     
     public ArrayList<Cliente> getClientes(){

@@ -29,6 +29,7 @@ public class formVentana extends javax.swing.JFrame {
     private Ferreteria ferreteria;
     private String archivo = "ferreteria-data.data";
 
+    private Venta venta;
     /**
      * Creates new form formVentana
      */
@@ -81,7 +82,6 @@ public class formVentana extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaNuevaVenta = new javax.swing.JTable();
         btnVender = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         lblNuevaVenta = new javax.swing.JLabel();
         lblProducto = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
@@ -91,11 +91,11 @@ public class formVentana extends javax.swing.JFrame {
         lblPrecioProd = new javax.swing.JLabel();
         txtPrecioProd = new javax.swing.JTextField();
         btnQuitar = new javax.swing.JButton();
-        txtNombreCliente = new javax.swing.JTextField();
         lblNombreCliente = new javax.swing.JLabel();
         comboProductos = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         txtcantidadProductos = new javax.swing.JTextField();
+        clienteComprador = new javax.swing.JComboBox<>();
         panelClientes = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaClientes = new javax.swing.JTable();
@@ -184,7 +184,7 @@ public class formVentana extends javax.swing.JFrame {
         panelBotones.setAlignmentY(0.0F);
         panelBotones.setLayout(new java.awt.GridBagLayout());
 
-        btnNuevaVenta.setText("Nueva venta");
+        btnNuevaVenta.setText("Vender");
         btnNuevaVenta.setPreferredSize(new java.awt.Dimension(120, 40));
         btnNuevaVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,7 +197,7 @@ public class formVentana extends javax.swing.JFrame {
         gridBagConstraints.ipady = 10;
         panelBotones.add(btnNuevaVenta, gridBagConstraints);
 
-        btnClientes.setText("Panel Clientes");
+        btnClientes.setText("Mis Clientes");
         btnClientes.setPreferredSize(new java.awt.Dimension(120, 40));
         btnClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -212,7 +212,7 @@ public class formVentana extends javax.swing.JFrame {
         gridBagConstraints.ipady = 10;
         panelBotones.add(btnClientes, gridBagConstraints);
 
-        btnProductos.setText("Panel productos");
+        btnProductos.setText("Mis Productos");
         btnProductos.setPreferredSize(new java.awt.Dimension(120, 40));
         btnProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -227,7 +227,7 @@ public class formVentana extends javax.swing.JFrame {
         gridBagConstraints.ipady = 10;
         panelBotones.add(btnProductos, gridBagConstraints);
 
-        btnProveedores.setText("Proveedores");
+        btnProveedores.setText("Mis Proveedores");
         btnProveedores.setPreferredSize(new java.awt.Dimension(120, 40));
         btnProveedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,7 +242,7 @@ public class formVentana extends javax.swing.JFrame {
         gridBagConstraints.ipady = 10;
         panelBotones.add(btnProveedores, gridBagConstraints);
 
-        btnVentas.setText("Ventas");
+        btnVentas.setText("Historial de Ventas");
         btnVentas.setPreferredSize(new java.awt.Dimension(120, 40));
         btnVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,7 +267,7 @@ public class formVentana extends javax.swing.JFrame {
         gridBagConstraints.ipady = 10;
         panelBotones.add(btnInfo, gridBagConstraints);
 
-        btnEmpleados.setText("Panel Empleados");
+        btnEmpleados.setText("Mis Empleados");
         btnEmpleados.setPreferredSize(new java.awt.Dimension(120, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -293,10 +293,7 @@ public class formVentana extends javax.swing.JFrame {
 
         tablaNuevaVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Codigo", "Producto", "Cantidad", "Precio Unitario", "Precio "
@@ -317,7 +314,8 @@ public class formVentana extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablaNuevaVenta.setColumnSelectionAllowed(true);
+        tablaNuevaVenta.setRowHeight(30);
+        tablaNuevaVenta.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaNuevaVenta.getTableHeader().setReorderingAllowed(false);
         tablaNuevaVenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -328,9 +326,11 @@ public class formVentana extends javax.swing.JFrame {
         tablaNuevaVenta.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         btnVender.setText("Vender");
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setEnabled(false);
+        btnVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVenderActionPerformed(evt);
+            }
+        });
 
         lblNuevaVenta.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblNuevaVenta.setText("Nueva venta");
@@ -360,6 +360,12 @@ public class formVentana extends javax.swing.JFrame {
         txtPrecioProd.setEnabled(false);
 
         btnQuitar.setText("Quitar");
+        btnQuitar.setEnabled(false);
+        btnQuitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarActionPerformed(evt);
+            }
+        });
 
         lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblNombreCliente.setText("Cliente:");
@@ -379,6 +385,8 @@ public class formVentana extends javax.swing.JFrame {
             }
         });
 
+        clienteComprador.setEditable(true);
+
         javax.swing.GroupLayout panelNuevaVentaLayout = new javax.swing.GroupLayout(panelNuevaVenta);
         panelNuevaVenta.setLayout(panelNuevaVentaLayout);
         panelNuevaVentaLayout.setHorizontalGroup(
@@ -388,16 +396,22 @@ public class formVentana extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNuevaVentaLayout.createSequentialGroup()
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(200, 200, 200)
+                        .addGap(285, 285, 285)
                         .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNuevaVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelNuevaVentaLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(panelNuevaVentaLayout.createSequentialGroup()
+                                .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(clienteComprador, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelNuevaVentaLayout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(40, 40, 40)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -413,13 +427,7 @@ public class formVentana extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNuevaVentaLayout.createSequentialGroup()
-                        .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(922, 922, 922))
-                    .addComponent(lblNuevaVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelNuevaVentaLayout.setVerticalGroup(
@@ -442,15 +450,13 @@ public class formVentana extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clienteComprador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelNuevaVentaLayout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addGroup(panelNuevaVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelNuevaVentaLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -650,6 +656,7 @@ public class formVentana extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaProductos.setRowHeight(30);
         tablaProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaProductosMouseClicked(evt);
@@ -819,6 +826,7 @@ public class formVentana extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaProveedores.setRowHeight(30);
         tablaProveedores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaProveedoresMouseClicked(evt);
@@ -951,6 +959,7 @@ public class formVentana extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaVentas.setRowHeight(30);
         jScrollPane6.setViewportView(tablaVentas);
 
         lblHistorialVentaas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -1012,19 +1021,19 @@ public class formVentana extends javax.swing.JFrame {
         lblRut.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblRut.setText("RUT:");
 
-        txtRut.setEnabled(false);
+        txtRut.setEditable(false);
 
         lblNombreFerreteria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblNombreFerreteria.setText("Nombre:");
 
-        txtNombreFerreteria.setEnabled(false);
+        txtNombreFerreteria.setEditable(false);
 
         lblTelefonoFerreteria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTelefonoFerreteria.setText("Telefono:");
 
-        txtTelefonoFerreteria.setEnabled(false);
+        txtTelefonoFerreteria.setEditable(false);
 
-        txtDireccionFerreteria.setEnabled(false);
+        txtDireccionFerreteria.setEditable(false);
 
         lblDireccionFerreteria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDireccionFerreteria.setText("Direccion:");
@@ -1402,13 +1411,14 @@ public class formVentana extends javax.swing.JFrame {
 
     private void panelVentaComponentShown(java.awt.event.ComponentEvent evt) {
         actualizarComboProductos();
-        actualizarCarrito();
+        actualizarCarrito(venta);
     }
 
-    Venta v = new Venta();
+    
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-
+        venta = new Venta();
+        
         Producto p = buscarProductoByNombre((String) comboProductos.getSelectedItem());
         if (p != null && !txtcantidadProductos.getText().isEmpty()) {
             int cantidad = Integer.parseInt(txtcantidadProductos.getText().trim());
@@ -1418,7 +1428,8 @@ public class formVentana extends javax.swing.JFrame {
             }
 
             Producto productoVenta = new Producto(p.getCodigo(), p.getNombre(), p.getCosto(), p.getPrecio(), cantidad, p.getProveedor());
-            v.agregarProductoVenta(productoVenta);
+            venta.agregarProductoVenta(productoVenta);
+            venta.setCliente(buscarClienteByNombre((String)clienteComprador.getSelectedItem()));
             p.setCantidad(p.getCantidad() - cantidad);
             txtStockProd.setText(String.valueOf(p.getCantidad()));
             txtPrecioProd.setText(String.valueOf(p.getPrecio()));
@@ -1427,7 +1438,11 @@ public class formVentana extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Selecciones un producto y la cantidad", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        actualizarCarrito();
+        
+        btnQuitar.setEnabled(false);
+        txtcantidadProductos.setText("");
+        
+        actualizarCarrito(venta);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
@@ -1443,23 +1458,46 @@ public class formVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_comboProductosActionPerformed
 
     private void tablaNuevaVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaNuevaVentaMouseClicked
-        if (tablaNuevaVenta.getSelectedRow() != -1) {
-            btnAgregar.setEnabled(true);
-            btnEliminar.setEnabled(true);
+        if (tablaNuevaVenta.getSelectedRow() != -1) {//fila seleccionada
+            btnQuitar.setEnabled(true);
         } else {
-            btnAgregar.setEnabled(false);
-            btnEliminar.setEnabled(false);
+            btnQuitar.setEnabled(false);
         }
     }//GEN-LAST:event_tablaNuevaVentaMouseClicked
 
     private void panelNuevaVentaComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelNuevaVentaComponentShown
         actualizarComboProductos();
-        System.out.println("nueva venta shown");
+        actualizarClientesNuevaVenta();
     }//GEN-LAST:event_panelNuevaVentaComponentShown
 
     private void ventanasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_ventanasComponentShown
         // TODO add your handling code here:
     }//GEN-LAST:event_ventanasComponentShown
+
+    private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
+        int filaSeleccionada = tablaNuevaVenta.getSelectedRow();
+        String nombreProducto = (String) tablaNuevaVenta.getValueAt(filaSeleccionada, 1);//1(columna nombre)
+        int cantidadDevuelta = (int) tablaNuevaVenta.getValueAt(filaSeleccionada, 2);//2 (columna cantidad)
+        
+        Producto p = buscarProductoByNombre(nombreProducto);
+        if(p != null){
+            p.setCantidad(p.getCantidad()+cantidadDevuelta);
+        }
+        
+        DefaultTableModel modelo = (DefaultTableModel) tablaNuevaVenta.getModel();
+        if(filaSeleccionada != -1){
+            modelo.removeRow(filaSeleccionada);
+        }else{
+            JOptionPane.showMessageDialog(this,"Selecciona una fila");
+        }
+        
+        txtStockProd.setText(String.valueOf(p.getCantidad()));
+    }//GEN-LAST:event_btnQuitarActionPerformed
+
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+        ferreteria.hacerVenta(venta);
+        JOptionPane.showMessageDialog(null, "Venta realizada a "+venta.getCliente().getNombre()+" exitosamente");
+    }//GEN-LAST:event_btnVenderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1507,7 +1545,6 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JButton btnEditarCliente;
     private javax.swing.JButton btnEditarProd;
     private javax.swing.JButton btnEditarProveedor;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEmpleados;
     private javax.swing.JButton btnGuardarCliente;
     private javax.swing.JButton btnGuardarProveedor;
@@ -1519,6 +1556,7 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JButton btnQuitar;
     private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVentas;
+    private javax.swing.JComboBox<String> clienteComprador;
     private javax.swing.JComboBox<String> comboProductos;
     private javax.swing.JComboBox<String> comboProveedores;
     private javax.swing.JLabel jLabel1;
@@ -1581,7 +1619,6 @@ public class formVentana extends javax.swing.JFrame {
     private javax.swing.JTextField txtDocumentoCliente;
     private javax.swing.JTextField txtDocumentoProveedor;
     private javax.swing.JTextField txtNombreCli;
-    private javax.swing.JTextField txtNombreCliente;
     private javax.swing.JTextField txtNombreFerreteria;
     private javax.swing.JTextField txtNombreProd;
     private javax.swing.JTextField txtNombreProveedor;
@@ -1770,7 +1807,7 @@ public class formVentana extends javax.swing.JFrame {
         }
     }
 
-    private void actualizarCarrito() {
+    private void actualizarCarrito(Venta v) {
         DefaultTableModel model = (DefaultTableModel) tablaNuevaVenta.getModel();
         model.setRowCount(0);
         
@@ -1800,6 +1837,14 @@ public class formVentana extends javax.swing.JFrame {
             }
         }
         return null;
+    }
+
+    private void actualizarClientesNuevaVenta() {
+        clienteComprador.removeAllItems();
+
+        for (Cliente cliente : ferreteria.getClientes()) {
+            clienteComprador.addItem(cliente.getNombre());
+        }
     }
 
 }
